@@ -1,8 +1,16 @@
 import discord
 import random
 
+from subprocess import PIPE, run
+
+def r(command):
+    return run(command, shell=True, stdout=PIPE, stderr=PIPE).stdout.decode()
+
+
 with open("TOKEN") as token:
     TOKEN = token.readline()
+
+activator = "!"
 
 health_range = 100
 attack_range = 100
@@ -12,12 +20,14 @@ types = ["fire", "water", "grass", "presidential", "memelord", "peasant", "deity
 
 class Player:
 
+    name = ""
     death = bool(False)
     type = str("")
     health = int(0)
     attack = int(0)
     defense = int(0)
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.type = types[random.randint(0, len(types) - 1)]
         self.health = random.randint(1, health_range)
         self.attack = random.randint(1, attack_range)
@@ -43,6 +53,8 @@ class Player:
 
 client = discord.Client()
 
+players = [
+]
 
 @client.event
 async def on_message(message):
@@ -50,26 +62,56 @@ async def on_message(message):
         msg = " Why wud U do that?!1"
         return
 
+
+    if message.content.startswith(activator + "players"):
+        return
+        if len(players) > 1:
+            msg = "There's " + str(len(players)) + " player(s) and they are as followed: \n" +\
+                  str([i + "\n" for i in players])
+        else:
+            msg = "No one's playing yet"
+
+        await  client.send_message(msg.format(message))
+
     if message.content.startswith("!hello"):
         msg = "Hello {0.author.mention}".format(message)
         await client.send_message(message.channel, msg)
 
     if message.content.startswith("!battle reset"):
+        return
         print("doing the thing")
-        player_name = "Asssssh" # TODO: figure out the persons id
-        player_name = Player()
+        player_name = message.author
+        if player_name.id in players:
+            players.pop(player_name.id)
+        players.append(Player(player_name))
         print(player_name.stats())
-        msg = str("your stats are: " + str(player_name.stats())).format(message)
+        msg = str(str(player_name) + " your stats " + str(player_name) + "are: " + str(player_name.stats())).format(message)
         await client.send_message(message.channel, msg)
-        print(player_name)
+
+    if message.content.startswith(activator + "fortune"):
+        print(message.author.name)
+
+        if message.author.name.startswith("ˡᶦᵗᵗˡᵉ ᶠᵘᶻᶻᵇᵃˡˡ"):
+                msg = "I'm not allowed to talk to you"
+
+        if message.author.name.startswith("Awesome"):
+            msg = "You're pretty awesome aren't you :-)"
+        else:
+            msg = r("fortune")
+        await client.send_message(message.channel, msg)
+
+
 
     if message.content.startswith("!battle stats"):
-        pass
+        return
+        msg = message.author
+        print(msg)
+        await client.send_message(message.channel, msg)
+
 
 @client.event
 async def on_ready():
-    print("Logged in as \n %s \n %s \n", client.user.name, client.user.id)
-    msg = "Hello I'm ready"
+    print("ready")
 
 client.run(TOKEN)
 
