@@ -89,23 +89,51 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
     if message.content.startswith(activator + "fortune"):
-        print(message.author.name)
+        print(message.author.id)
 
-        if message.author.name.startswith("ˡᶦᵗᵗˡᵉ ᶠᵘᶻᶻᵇᵃˡˡ"):
+        if "ˡᶦᵗᵗˡᵉ" in message.author.name:
                 msg = "I'm not allowed to talk to you"
 
-        if message.author.name.startswith("Awesome"):
+        if "Zu" in message.author.name or "awesome" in message.author.name:
             msg = "You're pretty awesome aren't you :-)"
+        if message.author.name.startswith("Summer"):
+            msg = "ALL HAIL CTHULHU"
+        if message.author.name.startswith("Der"):
+            msg = "I will never leave again"
         else:
             msg = r("fortune")
         await client.send_message(message.channel, msg)
+    if "bong" in message.content:
+        msg = "Drugs are bad mmmmkay"
+        await client.send_message(message.channel, msg)
+    if "Despacito" in message.content or "despacito" in message.content:
+        msg = "let's not despacITo"
+        await client.send_message(message.channel, msg)
 
+    if message.content.startswith(activator+"Skeet"):
+        msg = "i am a robot I have not emotions"
+        await client.send_message(message.channel, msg)
 
+    if message.content.startswith(activator+"givemethedrugs"):
+        msg = "no"
+        await client.send_message(message.channel, msg)
+
+    if message.content.startswith("gibb"):
+        banner = message.content.strip("banner")
+        msg = r("figlet " + banner).format(message)
+        await  client.send_message(message.channel, msg)
+    if "identity" in message.content:
+        msg = r("rig")
+        await client.send_message(message.channel, msg)
 
     if message.content.startswith("!battle stats"):
         return
         msg = message.author
         print(msg)
+        await client.send_message(message.channel, msg)
+
+    if message.content.startswith("!home"):
+        msg = ("https://github.com/awesomehaircut/Colleseum")
         await client.send_message(message.channel, msg)
 
 
