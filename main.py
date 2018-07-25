@@ -1,5 +1,4 @@
 import discord
-import random
 
 from subprocess import PIPE, run
 from time import sleep
@@ -60,7 +59,8 @@ async def on_message(message):
 
     if content.startswith("banner"): #This bit of code is proned to bugs
         print(message.content)
-        banner = message.content[6:]
+        banner = message.content[6:].strip(r"\'")
+        print(message.content)
         if len(banner) < 2: # This is onlt needed because banner will hang if you don't give it anything
             msg = "the message is too short"
         elif len(banner) > 140: # This is because discord hates long messages
@@ -71,7 +71,11 @@ async def on_message(message):
             except:
                 msg = "ok I give up" # This is just in case something, anything breaks (bad design fight me)
         print(msg)
-        await  client.send_message(message.channel, msg)
+        print(len(msg))
+        if len(msg) < 9:
+            await client.send_message(message.channel, "Empty. Like my soul")
+        else:
+            await client.send_message(message.channel, msg)
 
     if "identity" in message.content:
         msg = r("rig")
@@ -98,3 +102,4 @@ async def on_ready():
 
 
 client.run(TOKEN)
+
