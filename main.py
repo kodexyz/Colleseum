@@ -101,6 +101,17 @@ async def on_message(message):
             await client.delete_message(message)
         else:
             await client.send_message(channel, "Sorry that only works in #confessions")
+    if content.startswith("sudo"):
+        print(type(message.author.id))
+        if message.author.id == str(372397023036702732):
+            msg = r(content[5:])
+        else:
+            msg = "You ain't no zucy I know!"
+        try:
+            await client.send_message(channel, msg)
+        except:
+            await client.send_message(channel, "You suck at typingggg")
+
 
 
 @client.event
